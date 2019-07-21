@@ -1,8 +1,9 @@
 const {Router} = require('./core/router');
 
 const CarsController = require('./controllers/cars.controller');
-
+const BrandsController = require('./controllers/brands.controller');
 const cars = new CarsController();
+const brands = new BrandsController();
 
 const router = new Router([
     {
@@ -29,6 +30,16 @@ const router = new Router([
         path: '/api/v1/cars/:id',
         method: 'DELETE',
         callback: cars.deleteOne.bind(cars)
+    },
+    {
+        path: '/api/v1/brands',
+        method: 'GET',
+        callback: brands.getAll.bind(brands)
+    },
+    {
+        path: '/api/v1/brands',
+        method: 'POST',
+        callback: brands.createOne.bind(brands)
     },
 ]);
 

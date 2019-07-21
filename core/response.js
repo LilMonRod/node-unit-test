@@ -21,7 +21,7 @@ module.exports = class Response {
     }
 
     static BadRequest (res, errors = new Error('Something when wrong!')) {
-        Response.Send(res, {success: false, error: Response.ErrorMessage(errors)}, {'Status-Code': 400});
+        Response.Send(res, Response.ErrorMessage(errors), {'Status-Code': 400});
     }
 
     static ErrorMessage (errors) {
