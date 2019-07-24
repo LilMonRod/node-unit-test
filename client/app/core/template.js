@@ -1,15 +1,19 @@
 const Template = (function(){
     return class Template {
-        constructor({template = '', templateURL = null}){
+        constructor({template = '', templateURL = null, style = '', styleURL = ''}){
             if(!template && !templateURL)
                 throw new Error(`Invalid template config, required template string or templateURL`);
 
             this.template = template;
             this.templateURL = templateURL;
-            if(templateURL) this.fetch();
+            this.style = style;
+            this.styleURL = styleURL;
+
+            if(templateURL) this.fetchUrl();
+            if(this.styleURL) this.fetchStyle()
         }
 
-        fetch () {
+        fetchUrl () {
             if(this.template) return Promise.resolve(this.template);
 
             return fetch(this.templateURL)
@@ -17,18 +21,29 @@ const Template = (function(){
                 .then(template => this.template = template);
         }
 
-        async render (data = {}) {
-            let template = await this.fetch();
-            let tag = document.createElement('template');
+        fetchStyle () {
+            if(!this.styleURL) return Promise.resolve(this.style);
 
-            console.log("keys", Object.keys(data));
-            console.log('data', data);
+            return fetch(this.styleURL)
+                .then(response => response.text())
+                .then(style => this.style = style);
+        }
+
+        async render (data = {}) {
+            let template = await this.fetchUrl();
+            let style = await this.fetchStyle();
+
+            let templateTag = document.createElement('template');
+            let styleTag = document.createElement('style');
+            styleTag.innerHTML = style;
 
             // replace values
             Object.keys(data).forEach(key => template = template.replace(`{{${key}}}`, data[key]));
-            tag.innerHTML = template;
+            templateTag.innerHTML = template;
 
-            return tag.content.cloneNode(true);
+            let element = templateTag.content.cloneNode(true);
+            element.prepend(styleTag);
+            return element;
         }
     }
 })();
