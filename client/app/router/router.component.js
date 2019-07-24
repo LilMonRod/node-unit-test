@@ -1,4 +1,4 @@
-const RouterComponent = (function(config) {
+(function(config) {
     class RouterComponent extends HTMLElement {
         constructor () {
             super();
@@ -16,7 +16,8 @@ const RouterComponent = (function(config) {
          */
         connectedCallback () {
             console.log('connectedCallback');
-            this.shadowRoot.appendChild(this.template.render());
+            this.template.render()
+                .then(template => this.shadowRoot.appendChild(template));
         }
 
         disconnectedCallback () {
@@ -32,7 +33,11 @@ const RouterComponent = (function(config) {
             this[name] = newVal;
         }
     };
+
+    const register = () => customElements.define(config.component, RouterComponent);
+    window.WebComponents ? window.WebComponents.waitFor(register) : register();
 })({
+    component: 'app-router',
     templateURL: 'app/router/router.template.html',
     styleURL: 'app/router/router.css',
 });

@@ -1,31 +1,28 @@
 const Template = (function(){
     return class Template {
-        _template = null;
+        constructor({template = '', templateURL = null}){
+            if(!template && !templateURL)
+                throw new Error(`Invalid template config, required template string or templateURL`);
 
-        get template () {
-            return document.createElement('template');
-            template.innerHTML = value;
-            return template;
+            this.template = template;
+            this.templateURL = templateURL;
+            if(templateURL) this.fetch();
         }
 
-        constructor(config){
-            if(!config.template && !config.templateURL)
-                return throw new Error(`Invalid template config, required template string or templateURL`);
+        fetch () {
+            if(this.template) return Promise.resolve(this.template);
 
-            if(config.templateURL) {
-                fetch(config.templateURL)
-                    .then(response => {
-                        console.log("response", response);
-                        this._template = response;
-                    });
-            }
-            else {
-                this._template = config.template;
-            }
+            return fetch(this.templateURL)
+                .then(response => response.text())
+                .then(template => this.template = template);
         }
 
-        render (data = {}) {
-            return this.template.content.cloneNode(true);
+        async render (data = {}) {
+            await this.fetch();
+            let tag = document.createElement('template');
+            tag.innerHTML = this.template;
+
+            return tag.content.cloneNode(true);
         }
 
         replace (key, value) {
