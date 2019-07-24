@@ -18,15 +18,17 @@ const Template = (function(){
         }
 
         async render (data = {}) {
-            await this.fetch();
+            let template = await this.fetch();
             let tag = document.createElement('template');
-            tag.innerHTML = this.template;
+
+            console.log("keys", Object.keys(data));
+            console.log('data', data);
+
+            // replace values
+            Object.keys(data).forEach(key => template = template.replace(`{{${key}}}`, data[key]));
+            tag.innerHTML = template;
 
             return tag.content.cloneNode(true);
-        }
-
-        replace (key, value) {
-            this.template.replace(`{{${key}}`, value);
         }
     }
 })();
