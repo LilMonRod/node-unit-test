@@ -1,4 +1,4 @@
-class BaseComponent extends HTMLElement {
+class Component extends HTMLElement {
     get attrs () {
         let attrs = {};
         for(let i = 0; i < this.attributes.length; i++) {
@@ -22,9 +22,23 @@ class BaseComponent extends HTMLElement {
      * Everytime element connects to the dom
      */
     connectedCallback () {
-        console.log('connectedCallback', this.attributes, this.attrs);
-        this.template.render(this.attrs)
-            .then(template => this.shadowRoot.appendChild(template));
+        this.template.render(this.attrs, this)
+            .then(template => {
+                this.shadowRoot.appendChild(template);
+                return this._subTemplates();
+            })
+            .then(() => {
+                if(typeof this.afterConnected === 'function')
+                    this.afterConnected();
+            });
+    }
+
+    async _subTemplates () {
+        let templates = this.shadowRoot.querySelectorAll('template');
+        this.templates = {};
+        templates.forEach(t => {
+            if(t.id) this.templates[t.id] = new Template({template: t.innerHTML})
+        });
     }
 
     disconnectedCallback () {}
