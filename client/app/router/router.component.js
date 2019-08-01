@@ -5,7 +5,7 @@
         }
 
         afterConnected () {
-            this.shadowRoot.appendChild(document.createElement('car-list'));
+            // this.shadowRoot.appendChild(document.createElement('car-list'));
         }
     };
     RegisterComponent(config.component, RouterComponent);

@@ -1,5 +1,5 @@
 class Template {
-    static EVENTS = ['click'];
+    static EVENTS = ['click', 'submit'];
 
     constructor({template = null, templateURL = null, style = null, styleURL = ''}){
         this.template = template;
@@ -32,7 +32,7 @@ class Template {
         let template = await this.fetchUrl();
         let style = await this.fetchStyle();
 
-        let element = this.replace(template, data, component);
+        let element = this.parse(template, data, component);
 
         // add the component style
         if(style) {
@@ -44,7 +44,7 @@ class Template {
         return element;
     }
 
-    replace (template, data = null, component = null, events = Template.EVENTS) {
+    parse (template, data = null, component = null, events = Template.EVENTS) {
         if(!data && component) data = component.attrs;
         let element = this._templateElement(template);
 
@@ -67,6 +67,10 @@ class Template {
                 return {name, value, id};
             })
             .filter(event => event);
+
+        // clean any data not binded
+        let cleaner = /\{\{+(\w*)+\}\}/gmi;
+        element.innerHTML = element.innerHTML.replace(cleaner, "");
 
         element = element.content.cloneNode(true);
 

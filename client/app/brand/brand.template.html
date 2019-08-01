@@ -1,0 +1,30 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <template id="brand">
+            <tr>
+                <td>{{name}}</td>
+                <td>{{description}}</td>
+            </tr>
+        </template>
+    </tbody>
+</table>
+
+<form (submit)="submit">
+    <input type="text" name="name" placeholder="Name">
+    <textarea name="description" placeholder="Description"></textarea>
+    <button type="reset">Reset</button>
+    <button type="submit">Save</button>
+</form>
+
+<template id="message">
+    <section>
+        <header>{{title}}</header>
+        <article>{{message}}</article>
+    </section>
+</template>

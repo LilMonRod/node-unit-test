@@ -1,6 +1,6 @@
 (function (config){
     const API_URL = 'http://localhost:3000/api/v1/cars';
-    class NavbarComponent extends Component {
+    class CarsComponent extends Component {
         constructor() {
             super(config);
 
@@ -17,7 +17,7 @@
 
         getAll () {
             let template = this.template.templates.car;
-            this.api.getAll()
+            this.api.get()
                 .then(cars =>
                     Promise.all(cars.data
                         .map(car => template.render(car, this))
@@ -46,7 +46,7 @@
             this.getAll();
         }
     }
-    RegisterComponent(config.component, NavbarComponent);
+    RegisterComponent(config.component, CarsComponent);
 })({
     component: 'car-list',
     templateURL: 'app/cars/cars.template.html',
