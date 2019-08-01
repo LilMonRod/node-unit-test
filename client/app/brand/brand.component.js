@@ -33,7 +33,8 @@
             };
             this.service.post(data)
                 .then(response => {
-                    console.log('response', response);
+                    if(!response.success)
+                        return this.showMessage('Error', response.error);
 
                     this.showMessage('Brand created', `Brand ${data.name} created successfully.`);
                     form.name.value = '';

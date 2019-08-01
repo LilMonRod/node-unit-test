@@ -12,10 +12,7 @@ class Service {
 
     fetch (url, config = {}) {
         return fetch(url, config)
-            .then(response => {
-                console.log('response 1', response.body);
-                return response.json()
-            });
+            .then(response => response.json());
     }
 
     get () {
@@ -38,7 +35,7 @@ class Service {
             params.append(key, data[key]);
         }
 
-        return fetch(this._url, {
+        return this.fetch(this._url, {
             method: 'POST',
             body: params.toString()
         })
