@@ -4,7 +4,7 @@
         constructor() {
             super(config);
 
-            this.api = new Api(API_URL, {
+            this.service = new Service(API_URL, {
                 sortBy: 'name',
                 sortOrder: 'dec',
                 page: 1
@@ -17,7 +17,7 @@
 
         getAll () {
             let template = this.template.templates.car;
-            this.api.get()
+            this.service.get()
                 .then(cars =>
                     Promise.all(cars.data
                         .map(car => template.render(car, this))
@@ -37,18 +37,18 @@
         sort (event) {
             let sortBy = event.target.getAttribute('data-sort');
             console.log('sort', sortBy);
-            if(this.api.sortBy !== sortBy) {
-                this.api.sortBy = sortBy;
-                this.api.sortOrder = 'asc';
+            if(this.service.sortBy !== sortBy) {
+                this.service.sortBy = sortBy;
+                this.service.sortOrder = 'asc';
             }else {
-                this.api.sortOrder = 'desc';
+                this.service.sortOrder = 'desc';
             }
             this.getAll();
         }
     }
     RegisterComponent(config.component, CarsComponent);
 })({
-    component: 'car-list',
+    component: 'cars-list',
     templateURL: 'app/cars/cars.template.html',
     styleURL: 'app/cars/cars.css',
 });
