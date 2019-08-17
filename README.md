@@ -2,5 +2,10 @@
 Homework 1 solution
 
 ## Installation
- - npm install --save-dev mocha
+ - npm install
+ 
+ corremos el server con:
  - node index.js
+ 
+ corremos el test con:
+ - node test
