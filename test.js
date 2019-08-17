@@ -36,11 +36,9 @@ const assert = require('chai').assert;
 const response = require('../core/response');
 
 
-describe('Field test for killer robot', function(){
-   
-    let responser = response;
+describe('Checking resonse.Send()', function(){
     
-    it.skip('check that response send an answer', function(){
-        assert.isString(responser.Send(), 'string');
+    it('check that response send an answer', function(){
+        assert.isString(response.Send(), 'string');
     })    
 });
