@@ -2,5 +2,5 @@
 Homework 1 solution
 
 ## Installation
-npm install --save-dev mocha
-node index.js
+ - npm install --save-dev mocha
+ - node index.js
